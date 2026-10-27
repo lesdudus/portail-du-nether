@@ -1,285 +1,344 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le Portail du Nether</title>
 <meta name="description" content="Le Portail du Nether : accès aux jeux Ceinture et L'Aventure Légendaire.">
-<script>
-  (() => {
-    const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
-    const theme =
-      param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  })();
-</script>
+<meta name="theme-color" content="#0d0915">
 <style>
+/* Thème « Les tours de l'End », repris du jeu Ceinture */
 :root {
-  color-scheme: light;
-  --cp-bg: #f7f4ef;
-  --cp-bg-elevated: #fcfbf8;
-  --cp-surface: #ffffff;
-  --cp-surface-soft: #f5f5f5;
-  --cp-border: #dedede;
-  --cp-border-strong: #919191;
-  --cp-text: #242424;
-  --cp-text-muted: #5c5c5c;
-  --cp-text-soft: #6f6f6f;
-  --cp-accent: #b11f4b;
-  --cp-accent-hover: #9a1a41;
-  --cp-accent-soft: rgba(177, 31, 75, 0.08);
-  --cp-accent-fg: #ffffff;
-  --cp-success: #16a34a;
-  --cp-danger: #dc2626;
-  --cp-warning: #f59e0b;
-  --cp-link: #0078d4;
-  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
-  --cp-overlay: rgba(255, 255, 255, 0.8);
-  --cp-panel: rgba(255, 255, 255, 0.86);
-  --cp-panel-strong: rgba(255, 255, 255, 0.96);
-  --cp-sheen: rgba(255, 255, 255, 0.55);
-  --cp-highlight: rgba(177, 31, 75, 0.12);
-}
-html[data-theme="dark"] {
   color-scheme: dark;
-  --cp-bg: #3d3b3a;
-  --cp-bg-elevated: #343231;
-  --cp-surface: #292929;
-  --cp-surface-soft: #2e2e2e;
-  --cp-border: #474747;
-  --cp-border-strong: #5f5f5f;
-  --cp-text: #dedede;
-  --cp-text-muted: #919191;
-  --cp-text-soft: #b0b0b0;
-  --cp-accent: #fd8ea1;
-  --cp-accent-hover: #fb7b91;
-  --cp-accent-soft: rgba(253, 142, 161, 0.14);
-  --cp-accent-fg: #1a1a1a;
-  --cp-success: #4ade80;
-  --cp-danger: #f87171;
-  --cp-warning: #fbbf24;
-  --cp-link: #4da6ff;
-  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
-  --cp-overlay: rgba(41, 41, 41, 0.88);
-  --cp-panel: rgba(41, 41, 41, 0.72);
-  --cp-panel-strong: rgba(41, 41, 41, 0.96);
-  --cp-sheen: rgba(255, 255, 255, 0.04);
-  --cp-highlight: rgba(253, 142, 161, 0.12);
+  --cp-bg: #0d0915; --cp-bg-elevated: #1b1427; --cp-surface: #221932; --cp-surface-soft: #2a1f3d;
+  --cp-border: #4a3a66; --cp-border-strong: #a28fc4;
+  --cp-text: #f4eefc; --cp-text-muted: #d2c7e6; --cp-text-soft: #d2c7e6;
+  --cp-accent: #ece48f; --cp-accent-hover: #f4eeaa; --cp-accent-soft: #2e2640; --cp-accent-fg: #221532;
+  --cp-highlight: #3e2f5c;
+  --mc-outline: #05030a; --mc-bevel-light: #4b3b6a; --mc-bevel-dark: #120c1d;
+  --mc-header-bg: #1a1228; --mc-small-shadow: 2px 2px 0 #000000; --mc-title-shadow: 4px 4px 0 #000000;
+  --mc-cta: #c9a7f5; --mc-cta-hover: #d8bdfa; --mc-cta-ink: #1f0d36; --mc-cta-light: #ecdcff; --mc-cta-dark: #8c63bf;
+  --mc-stone: #3a2d55; --mc-stone-light: #5d4a85; --mc-stone-dark: #221935;
+  --mc-slot-bg: #150f22; --mc-slot-light: #4b3b6a; --mc-slot-dark: #05030a;
+  --mc-focus: #ece48f;
+  --glow: rgba(214, 120, 255, .32);
+  --stars: radial-gradient(circle at 14px 22px, rgba(255, 255, 255, .85) 0 1px, transparent 1.6px) 0 0 / 120px 110px,
+           radial-gradient(circle at 70px 64px, rgba(222, 196, 255, .75) 0 1px, transparent 1.6px) 0 0 / 150px 140px,
+           radial-gradient(circle at 40px 100px, rgba(255, 246, 200, .6) 0 1px, transparent 1.4px) 0 0 / 170px 160px;
+  /* Remplacées par les textures pixel générées en JS */
+  --tex-endstone: none; --tex-obsidian: none; --tex-purpur: none; --tex-portal: none; --px-crystal: none;
 }
 
-* { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; border-radius: 0; }
 html, body { margin: 0; }
 body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--cp-bg);
   color: var(--cp-text);
   font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+  image-rendering: pixelated;
+  background:
+    radial-gradient(ellipse 80% 45% at 50% -5%, rgba(150, 80, 210, .35), transparent 70%) 0 0 / 100% 100% no-repeat,
+    var(--stars),
+    var(--cp-bg);
 }
-.pixel { font-family: Consolas, "Courier New", Courier, monospace; }
+:focus-visible { outline: 4px solid var(--mc-focus); outline-offset: 3px; }
 
 main {
   flex: 1;
   width: 100%;
-  max-width: 960px;
+  max-width: 980px;
   margin: 0 auto;
-  padding: 48px 20px 32px;
+  padding: 40px 20px 48px;
 }
 
-/* ---------- Header ---------- */
-header { text-align: center; margin-bottom: 40px; }
-/* Portail du Nether : cadre d'obsidienne 4x5 avec un vortex animé */
+/* ---------- En-tête : portail entre deux tours d'obsidienne ---------- */
+.hero {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(20px, 6vw, 56px);
+  margin-bottom: 28px;
+}
+.tower { display: flex; flex-direction: column; align-items: center; }
+.tower .crystal {
+  width: 36px; height: 36px;
+  background: var(--px-crystal) center / contain no-repeat;
+  filter: drop-shadow(0 0 14px rgba(224, 124, 255, .85));
+  animation: float 2.6s ease-in-out infinite;
+  margin-bottom: 10px;
+}
+.tower.right .crystal { animation-delay: -1.3s; }
+.tower .pillar {
+  width: 32px;
+  background: var(--tex-obsidian) 0 0 / 32px 32px repeat;
+  box-shadow: inset 0 0 0 2px rgba(160, 120, 230, .35);
+}
+.tower.left .pillar { height: 96px; }
+.tower.right .pillar { height: 128px; }
+
 .portal {
-  display: inline-grid;
-  grid-template-columns: repeat(4, 18px);
-  grid-template-rows: repeat(5, 18px);
-  gap: 2px;
-  margin-bottom: 20px;
-  animation: bob 2.4s ease-in-out infinite;
+  display: grid;
+  grid-template-columns: repeat(4, 32px);
+  grid-template-rows: repeat(5, 32px);
 }
-.portal span { background: color-mix(in srgb, var(--cp-text) 85%, var(--cp-accent) 15%); }
-html[data-theme="dark"] .portal span {
-  background: color-mix(in srgb, var(--cp-surface) 75%, var(--cp-accent) 25%);
-  box-shadow: inset 0 0 0 1px var(--cp-border-strong);
+.portal .ob {
+  background: var(--tex-obsidian) 0 0 / 100% 100%;
+  box-shadow: inset 0 0 0 2px rgba(160, 120, 230, .4);
 }
-.portal .v, html[data-theme="dark"] .portal .v {
-  box-shadow: none;
-  background: linear-gradient(135deg, var(--cp-accent), var(--cp-accent-hover), var(--cp-highlight), var(--cp-accent));
-  background-size: 300% 300%;
-  animation: swirl 3s ease-in-out infinite;
+.portal .fill {
+  grid-column: 2 / 4;
+  grid-row: 2 / 5;
+  background: var(--tex-portal) 0 0 / 32px 32px;
+  box-shadow: 0 0 48px rgba(170, 80, 255, .75);
+  opacity: .94;
+  animation: swirl 1.6s linear infinite;
+}
+
+header { text-align: center; margin-bottom: 40px; }
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--cp-accent);
+  text-shadow: var(--mc-small-shadow);
 }
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 6vw, 3.4rem);
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-shadow: 4px 4px 0 var(--cp-highlight);
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  text-shadow: var(--mc-title-shadow);
 }
-h1 em { font-style: normal; color: var(--cp-accent); }
-.tagline {
-  margin: 12px 0 0;
-  font-size: 1.15rem;
-  color: var(--cp-text-muted);
-}
+.tagline { margin: 12px 0 0; font-size: 1.15rem; color: var(--cp-text-muted); }
 
-/* ---------- Cards ---------- */
+/* ---------- Cartes de jeux ---------- */
 .games {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 28px;
 }
 .card {
-  position: relative;
   display: flex;
   flex-direction: column;
-  padding: 28px 24px 24px;
-  border-radius: 16px;
   background: var(--cp-surface);
-  border: 1px solid var(--cp-border);
-  box-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
   color: inherit;
   text-decoration: none;
-  overflow: hidden;
-  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  border: 4px solid var(--mc-outline);
+  box-shadow: inset 4px 4px 0 var(--mc-bevel-light), inset -4px -4px 0 var(--mc-bevel-dark), 0 10px 0 rgba(0, 0, 0, .3);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
-.card::before {
-  /* Ligne de blocs "herbe" en haut de la carte */
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 8px;
-  background: repeating-linear-gradient(90deg,
-    var(--cp-success) 0 16px,
-    color-mix(in srgb, var(--cp-success) 75%, var(--cp-text) 25%) 16px 32px);
+.card-top {
+  height: 24px;
+  background: var(--tex-endstone) 0 0 / 24px 24px repeat-x;
+  border-bottom: 4px solid var(--mc-outline);
 }
+.card:nth-child(2) .card-top { background-image: var(--tex-purpur); }
+.card-body { display: flex; flex-direction: column; flex: 1; padding: 24px; }
 .card:hover, .card:focus-visible {
   transform: translateY(-6px);
-  border-color: var(--cp-accent);
-  box-shadow: var(--cp-shadow);
-  outline: none;
+  box-shadow: inset 4px 4px 0 var(--mc-bevel-light), inset -4px -4px 0 var(--mc-bevel-dark), 0 0 0 4px var(--mc-focus), 0 16px 32px var(--glow);
 }
-.card:hover .icon, .card:focus-visible .icon { transform: rotate(-8deg) scale(1.08); }
 
-.icon {
-  width: 72px;
-  height: 72px;
+.slot {
+  width: 76px;
+  height: 76px;
   display: grid;
   place-items: center;
   font-size: 2.4rem;
-  border-radius: 0.625rem;
-  background: var(--cp-accent-soft);
-  border: 2px solid var(--cp-border-strong);
   margin-bottom: 18px;
-  transition: transform .2s ease;
+  background: var(--mc-slot-bg);
+  box-shadow: inset 4px 4px 0 var(--mc-slot-dark), inset -4px -4px 0 var(--mc-slot-light);
 }
-.card h2 { margin: 0 0 6px; font-size: 1.6rem; font-weight: 800; }
+.slot span { transition: transform .2s ease; }
+.card:hover .slot span, .card:focus-visible .slot span { transform: rotate(-10deg) scale(1.12); }
+
+.card h2 { margin: 0 0 4px; font-size: 1.7rem; font-weight: 900; line-height: 1.2; text-shadow: var(--mc-small-shadow); }
 .card .sub {
   margin: 0 0 14px;
-  font-size: .9rem;
-  font-weight: 700;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .2em;
   text-transform: uppercase;
-  letter-spacing: .08em;
   color: var(--cp-accent);
+  text-shadow: var(--mc-small-shadow);
 }
-.card p.desc { margin: 0 0 18px; line-height: 1.5; color: var(--cp-text-muted); }
+.card .desc { margin: 0 0 18px; color: var(--cp-text-muted); }
 
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .chip {
   padding: 4px 10px;
-  font-size: .8rem;
-  border-radius: 0.625rem;
-  background: var(--cp-surface-soft);
-  border: 1px solid var(--cp-border);
-  color: var(--cp-text-soft);
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--cp-text);
+  background: var(--mc-stone);
+  border: 2px solid var(--mc-outline);
+  box-shadow: inset 2px 2px 0 var(--mc-stone-light), inset -2px -2px 0 var(--mc-stone-dark);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
 }
 
 .play {
   margin-top: auto;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   padding: 12px 18px;
-  border-radius: 0.625rem;
-  background: var(--cp-accent);
-  color: var(--cp-accent-fg);
-  font-weight: 800;
-  font-size: 1.05rem;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  border-bottom: 4px solid color-mix(in srgb, var(--cp-accent) 70%, var(--cp-text) 30%);
-  transition: background .15s ease;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--mc-cta-ink);
+  background: var(--mc-cta);
+  border: 4px solid var(--mc-outline);
+  box-shadow: inset 4px 4px 0 var(--mc-cta-light), inset -4px -4px 0 var(--mc-cta-dark);
 }
-.card:hover .play { background: var(--cp-accent-hover); }
+.card:hover .play { background: var(--mc-cta-hover); }
+.card:active .play { box-shadow: inset -4px -4px 0 var(--mc-cta-light), inset 4px 4px 0 var(--mc-cta-dark); }
 
-/* ---------- Footer ---------- */
-footer { text-align: center; padding: 0 20px 20px; color: var(--cp-text-soft); font-size: .9rem; }
+/* ---------- Pied de page : sol en pierre de l'End ---------- */
+footer { text-align: center; color: var(--cp-text-muted); font-size: .9rem; }
+footer p { margin: 0 20px 14px; }
+footer .fan { font-size: .78rem; opacity: .8; }
 .ground {
-  height: 28px;
-  margin-top: 8px;
-  background:
-    linear-gradient(var(--cp-success) 0 8px, transparent 8px),
-    repeating-linear-gradient(90deg,
-      color-mix(in srgb, var(--cp-warning) 55%, var(--cp-text) 45%) 0 20px,
-      color-mix(in srgb, var(--cp-warning) 45%, var(--cp-text) 55%) 20px 40px);
+  height: 96px;
+  background-image: var(--tex-purpur), var(--tex-obsidian), var(--tex-endstone), var(--tex-endstone);
+  background-size: 48px 48px;
+  background-repeat: no-repeat, no-repeat, repeat-x, repeat-x;
+  background-position: 144px 48px, 480px 0, 0 0, 0 48px;
+  border-top: 4px solid var(--mc-outline);
 }
 
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes swirl { 0%, 100% { background-position: 0% 0%; } 50% { background-position: 100% 100%; } }
+@keyframes swirl { to { background-position: 32px -64px; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (max-width: 520px) {
+  .portal { grid-template-columns: repeat(4, 24px); grid-template-rows: repeat(5, 24px); }
+  .portal .fill { background-size: 24px 24px; }
+  .tower .pillar { width: 24px; background-size: 24px 24px; }
+  .tower.left .pillar { height: 72px; }
+  .tower.right .pillar { height: 96px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  .portal, .portal .v { animation: none; }
-  .card, .icon { transition: none; }
+  .portal .fill, .tower .crystal { animation: none; }
+  .card, .slot span { transition: none; }
 }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <div class="portal" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
-      <span></span><span class="v"></span><span class="v"></span><span></span>
-      <span></span><span class="v"></span><span class="v"></span><span></span>
-      <span></span><span class="v"></span><span class="v"></span><span></span>
-      <span></span><span></span><span></span><span></span>
+  <div class="hero" aria-hidden="true">
+    <div class="tower left"><div class="crystal"></div><div class="pillar"></div></div>
+    <div class="portal">
+      <span class="ob"></span><span class="ob"></span><span class="ob"></span><span class="ob"></span>
+      <span class="ob"></span><span class="fill"></span><span class="ob"></span>
+      <span class="ob"></span><span class="ob"></span>
+      <span class="ob"></span><span class="ob"></span>
+      <span class="ob"></span><span class="ob"></span><span class="ob"></span><span class="ob"></span>
     </div>
-    <h1 class="pixel">Le Portail <em>du Nether</em></h1>
+    <div class="tower right"><div class="crystal"></div><div class="pillar"></div></div>
+  </div>
+
+  <header>
+    <p class="eyebrow">Expédition dans l'End</p>
+    <h1>Le Portail du Nether</h1>
     <p class="tagline">Traverse le portail et choisis ton aventure, joueur !</p>
   </header>
 
   <section class="games" aria-label="Jeux">
     <a class="card" href="https://lesdudus.github.io/ceinture/">
-      <div class="icon" aria-hidden="true">🥋</div>
-      <h2>Ceinture</h2>
-      <p class="sub pixel">À toi de diviser !</p>
-      <p class="desc">60 secondes, 20 calculs : enchaîne les divisions le plus vite possible et gagne des médailles.</p>
-      <div class="chips">
-        <span class="chip">➗ Divisions</span>
-        <span class="chip">⏱️ 60 s</span>
-        <span class="chip">🏅 Médailles</span>
+      <div class="card-top" aria-hidden="true"></div>
+      <div class="card-body">
+        <div class="slot" aria-hidden="true"><span>🥋</span></div>
+        <h2>Ceinture</h2>
+        <p class="sub">À toi de diviser !</p>
+        <p class="desc">60 secondes, 20 calculs : enchaîne les divisions le plus vite possible et gagne des médailles.</p>
+        <div class="chips">
+          <span class="chip">➗ Divisions</span>
+          <span class="chip">⏱️ 60 s</span>
+          <span class="chip">🏅 Médailles</span>
+        </div>
+        <span class="play">Jouer <span aria-hidden="true">▶</span></span>
       </div>
-      <span class="play pixel">Jouer ▶</span>
     </a>
 
     <a class="card" href="https://lesdudus.github.io/laventure-legendaire/">
-      <div class="icon" aria-hidden="true">🗡️</div>
-      <h2>L'Aventure Légendaire</h2>
-      <p class="sub pixel">Survie à 5 cm</p>
-      <p class="desc">Tu es tout petit dans un monde géant en 3D. Explore, survis et deviens une légende !</p>
-      <div class="chips">
-        <span class="chip">🌍 Monde 3D</span>
-        <span class="chip">🐜 Mini-survie</span>
-        <span class="chip">⭐ Exploration</span>
+      <div class="card-top" aria-hidden="true"></div>
+      <div class="card-body">
+        <div class="slot" aria-hidden="true"><span>🗡️</span></div>
+        <h2>L'Aventure Légendaire</h2>
+        <p class="sub">Survie à 5 cm</p>
+        <p class="desc">Tu es tout petit dans un monde géant en 3D. Explore, survis et deviens une légende !</p>
+        <div class="chips">
+          <span class="chip">🌍 Monde 3D</span>
+          <span class="chip">🐜 Mini-survie</span>
+          <span class="chip">⭐ Exploration</span>
+        </div>
+        <span class="play">Jouer <span aria-hidden="true">▶</span></span>
       </div>
-      <span class="play pixel">Jouer ▶</span>
     </a>
   </section>
 </main>
 
 <footer>
-  <div class="ground" aria-hidden="true"></div>
   <p>Fait avec ❤️ par Papa</p>
+  <p class="fan">Univers en pixels inspirés de Minecraft · Création de fan non officielle, non approuvée par Mojang ni associée à Mojang.</p>
+  <div class="ground" aria-hidden="true"></div>
 </footer>
+
+<script>
+  // Textures pixel originales générées à la volée (mêmes graines que Ceinture) : aucune texture officielle.
+  (() => {
+    const canvas = (w, h) => Object.assign(document.createElement("canvas"), { width: w, height: h });
+    const random = seed => () => {
+      seed = (seed + 0x6D2B79F5) | 0;
+      let v = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      v = (v + Math.imul(v ^ (v >>> 7), 61 | v)) ^ v;
+      return ((v ^ (v >>> 14)) >>> 0) / 4294967296;
+    };
+    const texture = (seed, weights, decorate) => {
+      const el = canvas(16, 16), ctx = el.getContext("2d"), next = random(seed);
+      const bag = weights.flatMap(([color, weight]) => Array(weight).fill(color));
+      for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
+        ctx.fillStyle = bag[Math.floor(next() * bag.length)];
+        ctx.fillRect(x, y, 1, 1);
+      }
+      if (decorate) decorate(ctx);
+      return el.toDataURL();
+    };
+    const crystal = () => {
+      const el = canvas(12, 12), ctx = el.getContext("2d");
+      for (let y = 0; y < 12; y++) for (let x = 0; x < 12; x++) {
+        const d = Math.abs(x - 5.5) + Math.abs(y - 5.5);
+        if (d > 6) continue;
+        ctx.fillStyle = d > 5 ? "#8e5bd6" : d > 3.5 ? "#e07cff" : d > 1.5 ? "#ffb8f2" : "#fff4fd";
+        ctx.fillRect(x, y, 1, 1);
+      }
+      return el.toDataURL();
+    };
+    const tex = {
+      endstone: texture(51, [["#e3e1a7", 5], ["#dbd89b", 4], ["#ebe9b8", 3], ["#cfcb8d", 2]], ctx => {
+        ctx.fillStyle = "#bdb677";
+        for (const [x, y] of [[3, 2], [11, 4], [6, 9], [13, 12], [2, 13], [9, 14]]) ctx.fillRect(x, y, 1, 1);
+      }),
+      obsidian: texture(52, [["#120c1c", 5], ["#1a1228", 4], ["#24183a", 2], ["#2f2248", 1]], ctx => {
+        ctx.fillStyle = "#4b3175";
+        for (const [x, y] of [[4, 3], [12, 6], [7, 11], [2, 14]]) ctx.fillRect(x, y, 1, 1);
+      }),
+      purpur: texture(53, [["#a97fc0", 5], ["#b48ccb", 3], ["#9e74b5", 3]], ctx => {
+        ctx.fillStyle = "#86599e";
+        for (const o of [0, 8]) { ctx.fillRect(0, o, 16, 1); ctx.fillRect(o, 0, 1, 16); }
+        ctx.fillStyle = "#c9a8dc";
+        for (const [x, y] of [[1, 1], [9, 1], [1, 9], [9, 9]]) ctx.fillRect(x, y, 6, 1);
+      }),
+      portal: texture(54, [["#5a1fa8", 4], ["#7a2fd6", 4], ["#9d4bff", 3], ["#c58bff", 1]])
+    };
+    const root = document.documentElement.style;
+    for (const [name, url] of Object.entries(tex)) root.setProperty(`--tex-${name}`, `url("${url}")`);
+    root.setProperty("--px-crystal", `url("${crystal()}")`);
+  })();
+</script>
 </body>
 </html>
